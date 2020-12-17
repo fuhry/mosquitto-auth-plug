@@ -72,7 +72,7 @@ void *be_mysql_init()
 	char *opt_flag;
 	int port;
 	bool ssl_enabled;	
-	my_bool reconnect = false;
+	bool reconnect = false;
 	
 
 	_log(LOG_DEBUG, "}}}} MYSQL");
@@ -342,7 +342,9 @@ int be_mysql_aclcheck(void *handle, const char *clientid, const char *username, 
 	sprintf(query, conf->aclquery, u, acc);
 	free(u);
 
-	//_log(LOG_DEBUG, "SQL: %s", query);
+	_log(LOG_DEBUG, "SQL: be_mysql_aclcheck(%p, %s, %s, %s, %d)", handle, clientid, username, topic, acc);
+
+	_log(LOG_DEBUG, "SQL: %s", query);
 
 	if (mysql_query(conf->mysql, query)) {
 		_log(LOG_NOTICE, "%s", mysql_error(conf->mysql));
@@ -358,7 +360,7 @@ int be_mysql_aclcheck(void *handle, const char *clientid, const char *username, 
 		if ((v = rowdata[0]) != NULL) {
 
 			/*
-			 * Check mosquitto_match_topic. If true, if true, set
+			 * Check mosquitto_match_topic. if true, set
 			 * match and break out of loop.
 			 */
 
@@ -366,10 +368,10 @@ int be_mysql_aclcheck(void *handle, const char *clientid, const char *username, 
 
 			t_expand(clientid, username, v, &expanded);
 			if (expanded && *expanded) {
-				mosquitto_topic_matches_sub(expanded, topic, &bf);
+				int res = topic_matches_sub(expanded, topic, &bf);
 				if (bf) match = BACKEND_ALLOW;
-				_log(LOG_DEBUG, "  mysql: topic_matches(%s, %s) == %d",
-				     expanded, v, bf);
+				_log(LOG_DEBUG, "  mysql: topic_matches(%s, %s, %d) returns %d",
+				     expanded, v, bf, res);
 
 				free(expanded);
 			}

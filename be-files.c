@@ -36,8 +36,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <mosquitto.h>
-#include <mosquitto_plugin.h>
 #include <mosquitto_broker.h>
+#include <mosquitto_plugin.h>
 #include "log.h"
 #include "hash.h"
 #include "backends.h"
@@ -391,7 +391,7 @@ static int do_aclcheck(dllist * acl_list,
 			}
 		}
 		*di = '\0';
-		if (mosquitto_topic_matches_sub(buf, topic, &ret) != MOSQ_ERR_SUCCESS) {
+		if (topic_matches_sub(buf, topic, &ret) != MOSQ_ERR_SUCCESS) {
 			LOG(MOSQ_LOG_ERR, "invalid topic '%s'", buf);
 		} else if (ret && (access & acl->access) != 0) {
 			return BACKEND_ALLOW;

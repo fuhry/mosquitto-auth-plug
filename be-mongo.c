@@ -327,7 +327,7 @@ bool be_mongo_check_acl_topics_array(const bson_iter_t *topics, const char *req_
 
 		t_expand(clientid, username, permitted_topic, &expanded);
 		if (expanded && *expanded) {
-			mosquitto_topic_matches_sub(expanded, req_topic, &topic_matches);
+			topic_matches_sub(expanded, req_topic, &topic_matches);
 			free(expanded);
 
 			if (topic_matches) {
@@ -354,7 +354,7 @@ bool be_mongo_check_acl_topics_map(const bson_iter_t *topics, const char *req_to
 
 		t_expand(clientid, username, permitted_topic, &expanded);
 		if (expanded && *expanded) {
-			mosquitto_topic_matches_sub(expanded, req_topic, &topic_matches);
+			topic_matches_sub(expanded, req_topic, &topic_matches);
 			free(expanded);
 
 			if (topic_matches) {

@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <mosquitto.h>
+#include "log.h"
 #include "backends.h"
 
 /*
@@ -80,4 +82,33 @@ void t_expand(const char *clientid, const char *username, const char *in, char *
 	*wp = 0;
 
 	*res = work;
+}
+
+
+/* Fix topic match not working with wildcards
+	Then origin call of mosquitto_topic_matches_sub does not support wildcards
+	within topic so for the test we replace it using a valid char.
+	This is related with issue https://github.com/eclipse/mosquitto/issues/1589
+*/
+int topic_matches_sub(const char *sub, const char *topic, bool *result)
+{
+	char *ttopic = NULL;
+	if ((ttopic = (char *)malloc(strlen(topic) + 1)) == NULL) {
+		return (BACKEND_ERROR);
+	}
+	strcpy(ttopic, topic);
+	char *p = ttopic;
+	while (*p) {
+		if (*p == '#' || *p == '+') {
+			*p = 'x';
+		}
+		p++;
+	}
+
+	int res = mosquitto_topic_matches_sub(sub, ttopic, result);
+	_log(LOG_DEBUG, "  backends: mosquitto_topic_matches_sub(%s, %s, %d) returns %d",
+			sub, ttopic, result, res);
+	free(ttopic);
+
+	return res;
 }

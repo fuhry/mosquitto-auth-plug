@@ -337,7 +337,7 @@ int be_pg_aclcheck(void *handle, const char *clientid, const char *username, con
 
 			t_expand(clientid, username, v, &expanded);
 			if (expanded && *expanded) {
-				mosquitto_topic_matches_sub(expanded, topic, &bf);
+				topic_matches_sub(expanded, topic, &bf);
 				if (bf) match = BACKEND_ALLOW;
 				_log(LOG_DEBUG, "  postgres: topic_matches(%s, %s) == %d",
 				     expanded, v, bf);

@@ -33,11 +33,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <mosquitto.h>
 #include "backends.h"
 #include "be-sqlite.h"
 #include "hash.h"
 #include "log.h"
-#include <mosquitto.h>
 
 static bool prepareStatement(struct sqlite_backend *conf)
 {
