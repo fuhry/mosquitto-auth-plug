@@ -92,7 +92,7 @@ int be_cdb_getuser(void *handle, const char *username, const char *password, cha
 	unsigned klen;
 
 	if (!conf || !username || !*username)
-		return (FALSE);
+		return (false);
 
 	k = (char *)username;
 	klen = strlen(k);
@@ -160,7 +160,7 @@ int be_cdb_superuser(void *handle, const char *username)
 
 int be_cdb_aclcheck(void *handle, const char *clientid, const char *username, const char *topic, int acc)
 {
-	/* FIXME: implement. Currently TRUE */
+	/* FIXME: implement. Currently true */
 
 	return BACKEND_ALLOW;
 }

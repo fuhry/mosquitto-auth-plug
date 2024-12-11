@@ -34,8 +34,8 @@
 #include "base64.h"
 
 #define SEPARATOR       "$"
-#define TRUE	(1)
-#define FALSE	(0)
+#define true	(1)
+#define false	(0)
 
 
 /*
@@ -95,7 +95,7 @@ int pbkdf2_check(char *password, char *hash)
 	int iterations, saltlen, blen;
 	char *b64, *keybuf;
 	unsigned char *out;
-	int match = FALSE;
+	int match = false;
 	const EVP_MD *evpmd;
 	int keylen, rc;
 
@@ -105,18 +105,18 @@ int pbkdf2_check(char *password, char *hash)
 	/* Determine key length by decoding base64 */
 	if ((keybuf = malloc(strlen(h_pw) + 1)) == NULL) {
 		fprintf(stderr, "Out of memory\n");
-		return FALSE;
+		return false;
 	}
 	keylen = base64_decode(h_pw, keybuf);
 	if (keylen < 1) {
 		free(keybuf);
-		return (FALSE);
+		return (false);
 	}
 	free(keybuf);
 
 	if ((out = malloc(keylen)) == NULL) {
 		fprintf(stderr, "Cannot allocate out; out of memory\n");
-		return (FALSE);
+		return (false);
 	}
 
 #ifdef RAW_SALT
@@ -124,12 +124,12 @@ int pbkdf2_check(char *password, char *hash)
 
 	if ((rawSalt = malloc(strlen(salt) + 1)) == NULL) {
 		fprintf(stderr, "Out of memory\n");
-		return FALSE;
+		return false;
 	}
 
 	saltlen = base64_decode(salt, rawSalt);
 	if (saltlen < 1) {
-		return (FALSE);
+		return (false);
 	}
 
 	free(salt);

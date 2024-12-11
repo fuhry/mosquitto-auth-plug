@@ -509,7 +509,7 @@ int mosquitto_auth_unpwd_check(void *userdata, const char *username, const char 
 	struct userdata *ud = (struct userdata *)userdata;
 	struct backend_p **bep;
 	char *phash = NULL, *backend_name = NULL;
-	int match, authenticated = FALSE, nord, granted, rc, has_error = FALSE;
+	int match, authenticated = false, nord, granted, rc, has_error = false;
 
 	if (!username || !*username || !password || !*password)
 		return MOSQ_DENY_AUTH;
@@ -536,7 +536,7 @@ int mosquitto_auth_unpwd_check(void *userdata, const char *username, const char 
 	granted = auth_cache_q(username, password, userdata);
 	if (granted != MOSQ_ERR_UNKNOWN) {
 		_log(LOG_DEBUG, "getuser(%s) CACHEDAUTH: %d",
-			username, (granted == MOSQ_ERR_SUCCESS) ? TRUE : FALSE);
+			username, (granted == MOSQ_ERR_SUCCESS) ? true : false);
 		return granted;
 	}
 
@@ -561,19 +561,19 @@ int mosquitto_auth_unpwd_check(void *userdata, const char *username, const char 
 #endif
 		if (rc == BACKEND_ALLOW) {
 			backend_name = (*bep)->name;
-			authenticated = TRUE;
+			authenticated = true;
 			break;
 		} else if (rc == BACKEND_DENY) {
-			authenticated = FALSE;
+			authenticated = false;
 			backend_name = (*bep)->name;
 			break;
 		} else if (rc == BACKEND_ERROR) {
-			has_error = TRUE;
+			has_error = true;
 		} else if (phash != NULL) {
 			match = pbkdf2_check((char *)password, phash);
 			if (match == 1) {
 				backend_name = (*bep)->name;
-				authenticated = TRUE;
+				authenticated = true;
 				/* Mark backend index in userdata so we can check
 				 * authorization in this back-end only.
 				 */
@@ -610,7 +610,7 @@ int mosquitto_auth_acl_check(void *userdata, const char *clientid, const char *u
 	struct userdata *ud = (struct userdata *)userdata;
 	struct backend_p **bep;
 	char *backend_name = NULL;
-	int match = 0, authorized = FALSE, has_error = FALSE;
+	int match = 0, authorized = false, has_error = false;
 	int granted = MOSQ_DENY_ACL;
 #if MOSQ_AUTH_PLUGIN_VERSION >= 3
 	struct cliententry *e;
@@ -704,7 +704,7 @@ int mosquitto_auth_acl_check(void *userdata, const char *clientid, const char *u
 		} else if (match == BACKEND_ERROR) {
 			_log(LOG_DEBUG, "aclcheck(%s, %s, %d) HAS_ERROR=Y by %s",
 				username, topic, access, b->name);
-			has_error = TRUE;
+			has_error = true;
 		}
 	}
 
@@ -720,16 +720,16 @@ int mosquitto_auth_acl_check(void *userdata, const char *clientid, const char *u
 			backend_name = b->name;
 			_log(LOG_DEBUG, "aclcheck(%s, %s, %d) trying to acl with %s",
 				username, topic, access, b->name);
-			authorized = TRUE;
+			authorized = true;
 			break;
 		} else if (match == BACKEND_DENY) {
 			backend_name = b->name;
-			authorized = FALSE;
+			authorized = false;
 			break;
 		} else if (match == BACKEND_ERROR) {
 			_log(LOG_DEBUG, "aclcheck(%s, %s, %d) HAS_ERROR=Y by %s",
 				username, topic, access, b->name);
-			has_error = TRUE;
+			has_error = true;
 		}
 	}
 
@@ -765,7 +765,7 @@ int mosquitto_auth_psk_key_get(void *userdata, const char *hint, const char *ide
 	struct backend_p **bep;
 	char *database = p_stab("psk_database");
 	char *psk_key = NULL, *username;
-	int psk_found = FALSE, rc, has_error = FALSE;
+	int psk_found = false, rc, has_error = false;
 
 	// username = malloc(strlen(hint) + strlen(identity) + 12);
 	// sprintf(username, "%s-%s", hint, identity);
@@ -782,10 +782,10 @@ int mosquitto_auth_psk_key_get(void *userdata, const char *hint, const char *ide
 	}
 
 	if (rc == BACKEND_ERROR) {
-		psk_found = FALSE;
-		has_error = TRUE;
+		psk_found = false;
+		has_error = true;
 	} else if (rc == BACKEND_DENY) {
-		psk_found = FALSE;
+		psk_found = false;
 	} else {
 		_log(LOG_DEBUG, "psk_key_get(hint=%s, identity=%s) from [%s] finds PSK: %d",
 			hint, identity, database,
@@ -793,7 +793,7 @@ int mosquitto_auth_psk_key_get(void *userdata, const char *hint, const char *ide
 
 		if (psk_key != NULL) {
 			strncpy(key, psk_key, max_key_len);
-			psk_found = TRUE;
+			psk_found = true;
 		}
 	}
 

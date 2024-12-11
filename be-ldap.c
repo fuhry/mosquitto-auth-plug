@@ -170,7 +170,7 @@ static int user_bind(char *connstr, char *dn, const char *password)
 
 	if (ldap_initialize(&ld, connstr) != LDAP_SUCCESS) {
 		_log(1, "Cannot ldap_initialize-2");
-		return (FALSE);
+		return (false);
 	}
 
 	opt = LDAP_VERSION3;
@@ -178,11 +178,11 @@ static int user_bind(char *connstr, char *dn, const char *password)
 
 	if ((rc = ldap_simple_bind_s(ld, dn, password)) != LDAP_SUCCESS) {
 		_log(1, "Cannot bind to LDAP as %s: %s", dn, ldap_err2string(rc));
-		return (FALSE);
+		return (false);
 	}
 
 	ldap_unbind(ld);
-	return (TRUE);
+	return (true);
 
 }
 

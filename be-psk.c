@@ -107,7 +107,7 @@ int be_psk_superuser(void *handle, const char *username)
 
 int be_psk_aclcheck(void *handle, const char *clientid, const char *username, const char *topic, int acc)
 {
-	/* FIXME: implement. Currently TRUE */
+	/* FIXME: implement. Currently true */
 
 	return 1;
 }

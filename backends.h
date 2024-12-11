@@ -27,12 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef TRUE
-#define TRUE (1)
-#endif
-#ifndef FALSE
-#define FALSE (0)
-#endif
+#include <stdbool.h>
 #ifndef BACKEND_DEFER
 #define BACKEND_DEFER (0)
 #endif
